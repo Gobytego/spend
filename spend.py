@@ -1,7 +1,7 @@
 import datetime
-import time  # Import the time module
-import pickle  # Import the pickle module for saving data
-import os # Import the os module for checking file existence
+import time  
+import pickle  
+import os 
 
 class SpendingCalculator:
     """
@@ -14,17 +14,17 @@ class SpendingCalculator:
         """
         self.expenses = []
         self.categories = ["Food", "Housing", "Transportation", "Entertainment", "Utilities", "Other"]
-        self.balance = 0  # Added balance
-        self.transaction_history = []  # Store last few transactions
-        self.history_length = 5  # Number of transactions to keep in history
-        self.budget = 0  # Added budget
-        self.budget_interval = "Month"  # Added budget interval
-        self.data_file = "spending_data.pkl"  # File to save data
-        self.budget_intervals = ["Day", "Week", "Bi-Weekly", "Month", "Year"] # list of budget intervals
-        self.category_budgets = {}  # Dictionary to store budgets for each category
+        self.balance = 0  
+        self.transaction_history = []  
+        self.history_length = 5  
+        self.budget = 0  
+        self.budget_interval = "Month"  
+        self.data_file = "spending_data.pkl"  
+        self.budget_intervals = ["Day", "Week", "Bi-Weekly", "Month", "Year"] 
+        self.category_budgets = {}  
 
-        self.load_data()  # Load data from file if it exists
-        self.initialize_category_budgets() # Initialize category budgets
+        self.load_data()  
+        self.initialize_category_budgets() 
 
     def initialize_category_budgets(self):
         """Initializes the category budgets to 0."""
@@ -60,7 +60,7 @@ class SpendingCalculator:
                     "transaction_history": self.transaction_history,
                     "budget": self.budget,
                     "budget_interval": self.budget_interval,
-                    "category_budgets": self.category_budgets, # Save category budgets
+                    "category_budgets": self.category_budgets, 
                 }
                 pickle.dump(data, f)
         except Exception as e:
@@ -75,8 +75,8 @@ class SpendingCalculator:
                 amount = float(input("Enter amount: "))
                 if amount <= 0:
                     print("Amount must be greater than zero.")
-                    continue  # Go back to the beginning of the while loop
-                break  # Exit the loop if amount is valid
+                    continue  
+                break  
             except ValueError:
                 print("Invalid amount. Please enter a number.")
             except EOFError:
@@ -126,10 +126,10 @@ class SpendingCalculator:
                 return
 
         self.expenses.append((date, category, amount))
-        self.balance -= amount  # deduct amount from balance
-        self.transaction_history.append(("Expense", date, category, amount))  # Add to history
+        self.balance -= amount  
+        self.transaction_history.append(("Expense", date, category, amount))  
         if len(self.transaction_history) > self.history_length:
-            self.transaction_history.pop(0)  # Keep history at max length
+            self.transaction_history.pop(0)  
         print("Expense added successfully!")
 
     def update_summary(self):
@@ -175,7 +175,7 @@ class SpendingCalculator:
                     print("Category already exists.")
                     continue
                 self.categories.append(new_category)
-                self.category_budgets[new_category] = 0  # Initialize budget for new category
+                self.category_budgets[new_category] = 0  
                 print(f"Category '{new_category}' added successfully!")
                 break
             except EOFError:
@@ -195,7 +195,7 @@ class SpendingCalculator:
                     continue
                 self.categories.remove(category_to_delete)
                 if category_to_delete in self.category_budgets:
-                    del self.category_budgets[category_to_delete]  # Remove category budget
+                    del self.category_budgets[category_to_delete]  
                 print(f"Category '{category_to_delete}' deleted successfully!")
                 break
             except EOFError:
@@ -220,9 +220,9 @@ class SpendingCalculator:
                     print("Amount must be greater than zero.")
                     continue
                 self.balance += amount
-                self.transaction_history.append(("Deposit", datetime.datetime.now(), "Deposit", amount))  # Add to history
+                self.transaction_history.append(("Deposit", datetime.datetime.now(), "Deposit", amount))  
                 if len(self.transaction_history) > self.history_length:
-                    self.transaction_history.pop(0)  # Keep history at max length
+                    self.transaction_history.pop(0)  
                 print(f"${amount:.2f} added to balance. New balance: ${self.balance:.2f}")
                 break
             except ValueError:
@@ -262,9 +262,7 @@ class SpendingCalculator:
             elif self.budget_interval.lower() == "bi-weekly":
                 # Calculate the start of the bi-weekly period.  This assumes the bi-weekly period starts on a Monday
                 days_since_monday = now.weekday()
-                # Calculate how many weeks ago the last bi-weekly period started
                 weeks_since_start = (now - datetime.datetime(1970, 1, 5)).days // 7  # 1970-01-05 was a Monday
-                # If it's an odd week, go back one more week
                 if weeks_since_start % 2 != 0:
                     days_since_monday += 7
                 bi_weekly_start = now - datetime.timedelta(days=days_since_monday)
@@ -373,13 +371,13 @@ class SpendingCalculator:
     def category_menu(self):
         """Manages categories."""
         while True:
-            os.system('cls' if os.name == 'nt' else 'clear') # added line
+            os.system('cls' if os.name == 'nt' else 'clear') 
             print("\n--- Category Menu ---")
             self.list_categories()
             print("\nOptions:")
             print("1. Add Category")
             print("2. Delete Category")
-            print("x. Exit to Main Menu") # changed 3 to x
+            print("x. Exit to Main Menu") 
             try:
                 choice = input("Enter your choice: ")
             except EOFError:
@@ -390,8 +388,8 @@ class SpendingCalculator:
                 self.add_category()
             elif choice == '2':
                 self.delete_category()
-            elif choice.lower() == 'x': # changed 3 to x
-                return  # Exit to main menu
+            elif choice.lower() == 'x': 
+                return  
             else:
                 print("Invalid choice. Please try again.")
             time.sleep(1)
@@ -399,7 +397,7 @@ class SpendingCalculator:
     def budget_menu(self):
         """Manages budget and budget interval."""
         while True:
-            os.system('cls' if os.name == 'nt' else 'clear') # added line
+            os.system('cls' if os.name == 'nt' else 'clear') 
             print("\n--- Budget Menu ---")
             print(f"Total Budget: ${self.budget:.2f}")
             print(f"Current Budget Interval: {self.budget_interval}")
@@ -426,7 +424,7 @@ class SpendingCalculator:
             print("1. Set Total Budget")
             print("2. Set Category Budget")
             print("3. Set Budget Interval")
-            print("x. Exit to Main Menu") # changed 4 to x
+            print("x. Exit to Main Menu") 
             try:
                 choice = input("Enter your choice: ")
             except EOFError:
@@ -439,8 +437,8 @@ class SpendingCalculator:
                 self.set_category_budget()
             elif choice == '3':
                 self.set_budget_interval()
-            elif choice.lower() == 'x': # changed 4 to x
-                return  # Exit to main menu
+            elif choice.lower() == 'x': 
+                return  
             else:
                 print("Invalid choice. Please try again.")
             time.sleep(1)
@@ -455,7 +453,7 @@ class SpendingCalculator:
                 self.transaction_history = []
                 self.budget = 0
                 self.category_budgets = {}
-                self.save_data()  # Save the empty data
+                self.save_data()  
                 print("All data cleared successfully!")
                 break
             elif confirmation == 'no':
@@ -470,16 +468,16 @@ class SpendingCalculator:
         """
         print("Welcome to the Spending Calculator!")
         while True:
-            # os.system('cls' if os.name == 'nt' else 'clear') # removed line
-            self.display_status()  # Show balance and history at the start of each loop
+            # os.system('cls' if os.name == 'nt' else 'clear') 
+            self.display_status()  
             print("\nOptions:")
             print("1. Add Expense")
             print("2. Add Money")
             print("3. View Summary")
-            print("4. Budget") #changed from Set Budget to Budget
-            print("5. Categories") #changed from List Categories to Categories
+            print("4. Budget") 
+            print("5. Categories") 
             print("6. Clear All Data")
-            print("x. Exit")  # Exit option is now last and changed to x
+            print("x. Exit")  
             try:
                 choice = input("Enter your choice: ")
             except EOFError:
@@ -498,13 +496,13 @@ class SpendingCalculator:
                 self.category_menu()
             elif choice == '6':
                 self.clear_all_data()
-            elif choice.lower() == 'x': # changed 6 to x
+            elif choice.lower() == 'x': 
                 print("Exiting...")
-                self.save_data()  # Save data before exiting
+                self.save_data()  
                 break
             else:
                 print("Invalid choice. Please try again.")
-            time.sleep(1)  # Added a small delay
+            time.sleep(1)  
 
 if __name__ == "__main__":
     calculator = SpendingCalculator()
